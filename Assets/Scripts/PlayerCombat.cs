@@ -15,12 +15,14 @@ public class PlayerCombat : MonoBehaviour
 	void Start()
     {
         animator = GetComponent<Animator>();
+		attackTimer = attackCooldown;
     }
 
     // Update is called once per frame
     void Update()
     {
 		Attack();
+		if(attackTimer <= attackCooldown)
 		attackCooldownBar.UpdateBar(attackTimer, attackCooldown);
     }
 

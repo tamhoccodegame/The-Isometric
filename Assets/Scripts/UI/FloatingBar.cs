@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class FloatingBar : MonoBehaviour
 {
-	public Vector3 offset;
 	public Slider slider;
 	public float reduceSpeed;
 	public float fadeSpeed;
 	float fadeTimer;
+	public float showTime;
 	Transform cam;
 	Image[] images;
+
+	public bool isCoroutineRunning = false;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -20,19 +22,19 @@ public class FloatingBar : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update()
+	public virtual void Update()
 	{
 		transform.rotation = Quaternion.LookRotation(cam.forward, Vector3.up);
 	}
 
 	public virtual void UpdateBar(float value, float maxValue)
 	{
-		StopAllCoroutines();
-		StartCoroutine(ShowBar());
+		StartCoroutine(ShowBar(showTime));
 	}
 
-	IEnumerator ShowBar()
+	public IEnumerator ShowBar(float showTime)
 	{
+		isCoroutineRunning = true;
 		// Fade in
 		float currentFadeTime = 0f;
 		while (currentFadeTime < fadeSpeed)
@@ -48,7 +50,7 @@ public class FloatingBar : MonoBehaviour
 		}
 
 		// Đợi một khoảng thời gian
-		yield return new WaitForSeconds(2f);
+		yield return new WaitForSeconds(showTime);
 
 		// Fade out
 		currentFadeTime = 0f;
@@ -63,6 +65,8 @@ public class FloatingBar : MonoBehaviour
 			currentFadeTime += Time.deltaTime;
 			yield return null;
 		}
+
+		isCoroutineRunning = false;
 	}
 
 }
