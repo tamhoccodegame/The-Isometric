@@ -5,6 +5,7 @@ using UnityEngine;
 public class MeleeWeapon : Weapon
 {
 	public Collider hitBox;
+	public GameObject currentImpact;
 	public override void Attack()
 	{
 		StartCoroutine(AttackCoroutine());       
@@ -14,16 +15,21 @@ public class MeleeWeapon : Weapon
 	{
 		yield return new WaitForSeconds(0.2f);
 		hitBox.enabled = true;
-		yield return new WaitForSeconds(0.5f);
-		hitBox.enabled = false;
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
 		EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-		if (enemy != null)
+		if (enemy != null && currentImpact != enemy.gameObject)
+		{
 			enemy.TakeDamage(damage);
+			currentImpact = enemy.gameObject;
+		}
 		else return;
+	}
+	private void OnTriggerExit(Collider other)
+	{
+		currentImpact = null;
 	}
 
 	// Start is called before the first frame update
