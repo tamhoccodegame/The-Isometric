@@ -22,4 +22,14 @@ public class Sword : MeleeWeapon
 		base.Attack();
         effect.Play();
 	}
+
+	public override void ApplyDamage()
+	{
+		base.ApplyDamage();
+	}
+
+	public override void EndAttack()
+	{
+		base.EndAttack();
+	}
 }

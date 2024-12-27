@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
         {
             Die();
         }
-        healthBar.UpdateBar(currentHealth, maxHealth);
+        healthBar.UpdateValueBar(currentHealth, maxHealth);
     }
 
     public void Die()

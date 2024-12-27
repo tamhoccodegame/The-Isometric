@@ -23,7 +23,7 @@ public class PlayerCombat : MonoBehaviour
     {
 		Attack();
 		if(attackTimer <= attackCooldown)
-		attackCooldownBar.UpdateBar(attackTimer, attackCooldown);
+		attackCooldownBar.UpdateValueBar(attackTimer, attackCooldown);
     }
 
 
@@ -57,8 +57,20 @@ public class PlayerCombat : MonoBehaviour
 		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+	public void ApplyDamage()
 	{
-		
+		if (currentWeapon != null && currentWeapon is MeleeWeapon)
+		{
+			currentWeapon.ApplyDamage();
+
+		}
+	}
+
+	public void EndAttack()
+	{
+		if (currentWeapon != null && currentWeapon is MeleeWeapon)
+		{
+			currentWeapon.EndAttack();
+		}
 	}
 }

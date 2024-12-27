@@ -14,22 +14,33 @@ public class MeleeWeapon : Weapon
 	IEnumerator AttackCoroutine()
 	{
 		yield return new WaitForSeconds(0.2f);
+	}
+
+	public override void ApplyDamage()
+	{
 		hitBox.enabled = true;
+	}
+
+	public override void EndAttack()
+	{
+		hitBox.enabled = false;
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (currentImpact != null & other.gameObject == currentImpact) return;
 		EnemyHealth enemy = other.GetComponent<EnemyHealth>();
 		if (enemy != null && currentImpact != enemy.gameObject)
 		{
 			enemy.TakeDamage(damage);
 			currentImpact = enemy.gameObject;
 		}
-		else return;
 	}
 	private void OnTriggerExit(Collider other)
 	{
-		currentImpact = null;
+		EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+		if(enemy != null && currentImpact == other.gameObject)
+			currentImpact = null;
 	}
 
 	// Start is called before the first frame update
