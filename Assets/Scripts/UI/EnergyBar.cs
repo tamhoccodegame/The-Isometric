@@ -12,7 +12,8 @@ public class EnergyBar : FloatingBar
         base.Update();
         //slider.maxValue = maxValue;
         //slider.value = value / maxValue;
-        //if (slider.value >= maxValue) slider.gameObject.SetActive(false);
+        //if (slider.value >= ma
+        //xValue) slider.gameObject.SetActive(false);
         //else
         //{
         //    slider.gameObject.SetActive(true);
@@ -20,11 +21,10 @@ public class EnergyBar : FloatingBar
 
     }
 
-	public override void UpdateBar(float value, float maxValue)
+	public override void UpdateValueBar(float value, float maxValue)
 	{
+        base.UpdateValueBar(value, maxValue);
 		slider.value = value / maxValue;
-        if(isCoroutineRunning) return;
-		StartCoroutine(ShowBar(showTime));
 	}
 
 }

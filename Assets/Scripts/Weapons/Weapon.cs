@@ -11,4 +11,14 @@ public abstract class Weapon : MonoBehaviour
     {
         Debug.Log("Reloading");
     }
+
+    public virtual void ApplyDamage()
+    {
+
+    }
+
+    public virtual void EndAttack()
+    {
+
+	}
 }

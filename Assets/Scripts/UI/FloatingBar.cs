@@ -9,7 +9,15 @@ public class FloatingBar : MonoBehaviour
 	public float reduceSpeed;
 	public float fadeSpeed;
 	float fadeTimer;
+	private float currentAlpha = 0f;
+	private float value;
+	private float maxValue;
+
 	public float showTime;
+	public float showTimer;
+	public float delayTime;
+	public float delayTimer;
+
 	Transform cam;
 	Image[] images;
 
@@ -25,48 +33,53 @@ public class FloatingBar : MonoBehaviour
 	public virtual void Update()
 	{
 		transform.rotation = Quaternion.LookRotation(cam.forward, Vector3.up);
+		UpdateBar();
 	}
 
-	public virtual void UpdateBar(float value, float maxValue)
+	public virtual void UpdateValueBar(float value, float maxValue)
 	{
-		StartCoroutine(ShowBar(showTime));
+		showTimer = 0;
+		delayTimer = delayTime;
+		this.maxValue = maxValue;
+		this.value = value;
 	}
 
-	public IEnumerator ShowBar(float showTime)
+	public void UpdateBar()
 	{
-		isCoroutineRunning = true;
-		// Fade in
-		float currentFadeTime = 0f;
-		while (currentFadeTime < fadeSpeed)
+		// Giai đoạn fade in
+		if (showTimer < showTime)
 		{
-			foreach (Image i in images)
+			currentAlpha += Time.deltaTime * fadeSpeed;
+			currentAlpha = Mathf.Clamp01(currentAlpha);
+
+			foreach (Image image in images)
 			{
-				Color color = i.color;
-				color.a = Mathf.Lerp(0f, 1f, currentFadeTime / fadeSpeed); // Tăng dần alpha
-				i.color = color;
+				Color color = image.color;
+				color.a = currentAlpha;
+				image.color = color;
 			}
-			currentFadeTime += Time.deltaTime;
-			yield return null;
+
+			showTimer += Time.deltaTime; // Tăng thời gian hiển thị
 		}
-
-		// Đợi một khoảng thời gian
-		yield return new WaitForSeconds(showTime);
-
-		// Fade out
-		currentFadeTime = 0f;
-		while (currentFadeTime < fadeSpeed)
+		// Giai đoạn delay
+		else if (delayTimer > 0)
 		{
-			foreach (Image i in images)
-			{
-				Color color = i.color;
-				color.a = Mathf.Lerp(1f, 0f, currentFadeTime / fadeSpeed); // Giảm dần alpha
-				i.color = color;
-			}
-			currentFadeTime += Time.deltaTime;
-			yield return null;
+			delayTimer -= Time.deltaTime; // Giảm thời gian delay
 		}
+		// Giai đoạn fade out
+		else
+		{
+			currentAlpha -= Time.deltaTime * fadeSpeed;
+			currentAlpha = Mathf.Clamp01(currentAlpha);
 
-		isCoroutineRunning = false;
+			foreach (Image image in images)
+			{
+				Color color = image.color;
+				color.a = currentAlpha;
+				image.color = color;
+			}
+		}
 	}
+
 
 }

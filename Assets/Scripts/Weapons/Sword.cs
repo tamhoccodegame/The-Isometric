@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Sword : MeleeWeapon
 {
-    public ParticleSystem effect;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,5 +20,15 @@ public class Sword : MeleeWeapon
 	{
 		base.Attack();
         effect.Play();
+	}
+
+	public override void ApplyDamage()
+	{
+		base.ApplyDamage();
+	}
+
+	public override void EndAttack()
+	{
+		base.EndAttack();
 	}
 }

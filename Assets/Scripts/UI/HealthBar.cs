@@ -12,9 +12,9 @@ public class HealthBar : FloatingBar
 		slider.value = Mathf.MoveTowards(slider.value, target, reduceSpeed * Time.deltaTime);
 	}
 
-	public override void UpdateBar(float value, float maxValue)
+	public override void UpdateValueBar(float value, float maxValue)
 	{
-		base.UpdateBar(value, maxValue);
+		base.UpdateValueBar(value, maxValue);
 		//base.StopAllCoroutines();
 		target = value / maxValue;
 	}
