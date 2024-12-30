@@ -242,8 +242,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 564819007794383450}
   reduceSpeed: 0.8
-  fadeSpeed: 0.1
-  showTime: 2
+  fadeSpeed: 5
+  showTime: 0.5
+  showTimer: 0
+  delayTime: 0.5
+  delayTimer: 0
   isCoroutineRunning: 0
 --- !u!1 &5139951429499666429
 GameObject:
@@ -417,15 +420,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 100.33
+      value: 90.01571
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5758
+      value: 1.501564
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100.56
+      value: 99.12915
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -466,6 +469,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7c2b615014b6e484ab227395cb733baf, type: 3}
       propertyPath: m_Controller

@@ -4,61 +4,80 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-	public Collider hitBox;
-	public GameObject currentImpact;
-
-	public ParticleSystem effect;
+	public GameObject effect;
 	public GameObject hitEffect;
+	public float hitRadius;
+	public Transform hitboxStart;
+	public Transform hitboxEnd;
+	public LayerMask enemyLayer;
+	public bool canApplyDamage = false;
+
+	public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+
 	public override void Attack()
 	{
-		StartCoroutine(AttackCoroutine());       
-	}
 
-	IEnumerator AttackCoroutine()
-	{
-		yield return new WaitForSeconds(0.2f);
 	}
 
 	public override void ApplyDamage()
 	{
-		hitBox.enabled = true;
+		canApplyDamage = true;
+		hitEnemies.Clear();
 	}
 
 	public override void EndAttack()
 	{
-		hitBox.enabled = false;
+		canApplyDamage = false;
+		hitEnemies.Clear();
+	}
+	// Update is called once per frame
+	void Update()
+	{
+		if (!canApplyDamage) return;
+		PerformOverlapCheck();
 	}
 
-	protected virtual void OnTriggerEnter(Collider other)
+	public virtual void PerformOverlapCheck()
 	{
-		if (currentImpact != null & other.gameObject == currentImpact) return;
-		EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-		if (enemy != null && currentImpact != enemy.gameObject)
-		{
-			enemy.TakeDamage(damage);
-			currentImpact = enemy.gameObject;
-			Debug.DrawLine(transform.position, other.ClosestPoint(transform.position), Color.red, 2f);
+		Vector3 start = hitboxStart.position;
+		Vector3 end = hitboxEnd.position;
 
-			var go = Instantiate(hitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
-			Destroy(go, 2f);
+		Collider[] hitColliders = Physics.OverlapCapsule(start, end, hitRadius, enemyLayer);
+
+		foreach (Collider hitCollider in hitColliders)
+		{
+			if(hitEnemies.Contains(hitCollider.gameObject)) continue;
+			hitEnemies.Add(hitCollider.gameObject);
+			Vector3 closetPoint = hitCollider.ClosestPoint((start + end) / 2);
+			SpawnHitEffect(closetPoint);
+			DealDamage(hitCollider.gameObject);
 		}
 	}
-	protected virtual void OnTriggerExit(Collider other)
+	protected void SpawnHitEffect(Vector3 position)
 	{
-		EnemyHealth enemy = other.GetComponent<EnemyHealth>();
-		if(enemy != null && currentImpact == other.gameObject)
-			currentImpact = null;
+		GameObject effect = Instantiate(hitEffect, position, Quaternion.identity);
+		Destroy(effect, 2f);
 	}
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
+	protected virtual void DealDamage(GameObject enemy)
+	{
+		EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+		if (enemyHealth != null)
+		{
+			enemyHealth.TakeDamage(damage);
+		}
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
+	private void OnDrawGizmos()
+	{
+		if (hitboxStart == null || hitboxEnd == null) return;
+
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(hitboxStart.position, hitRadius); // Đầu hitbox
+		Gizmos.DrawWireSphere(hitboxEnd.position, hitRadius);   // Cuối hitbox
+
+		// Vẽ đường nối giữa hai điểm
+		Gizmos.DrawLine(hitboxStart.position, hitboxEnd.position);
+	}
+
 }

@@ -64,9 +64,16 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5321429
+      - time: 0.6139843
         functionName: EndAttack
         data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.40357143
+        functionName: SpawnEffect
+        data: RightSlash
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
