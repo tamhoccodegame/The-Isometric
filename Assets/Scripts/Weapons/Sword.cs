@@ -6,13 +6,12 @@ public class Sword : MeleeWeapon
 {
 	private void Start()
 	{
-		currentSkillType = SkillType.None;
+
 	}
 	public override void Attack()
 	{
-		if (currentSkillType != SkillType.None)
-			UseSkill();
-		else playerCombat.animator.SetTrigger("isAttack");
+		if (currentSkillLevel == 0) playerCombat.animator.SetTrigger("isAttack");
+		else UseSkill(currentSkillLevel);
 	}
 
 	public override void ApplyDamage()
@@ -26,26 +25,20 @@ public class Sword : MeleeWeapon
 	}
 
 	
-	public override void UseSkill()
+	public override void UseSkill(int currentSkillLevel)
 	{
-		switch(currentSkillType)
+		switch(currentSkillLevel)
 		{
-			case SkillType.DoubleSlash:
+			case 1:
 				DoubleSlash();
 				break;
-			case SkillType.Whirlwind:
+			case 2:
 				Whirlwind();
 				break;
-			case SkillType.DashAttack:
+			case 3:
 				DashAttack();
 				break;
 		}
-	}
-
-	[ContextMenu("DoubleSlash")]
-	public void UseSkill1()
-	{
-		UpgradeSkill(SkillType.DoubleSlash);
 	}
 
 	void DoubleSlash()
@@ -61,43 +54,6 @@ public class Sword : MeleeWeapon
 	void DashAttack()
 	{
 		playerCombat.animator.SetTrigger("DashAttack");
-		//StartCoroutine(DashAttackCoroutine());
-	}
-
-	IEnumerator DashAttackCoroutine()
-	{
-		float dashDuration = 0.2f;
-		float dashTimeLeft = dashDuration;
-		float dashSpeed = 20f;
-
-		PlayerController playerController = FindObjectOfType<PlayerController>();
-		playerController.enabled = false;
-
-        while (dashTimeLeft > 0f)
-        {
-			FindObjectOfType<CharacterController>().Move(dashSpeed * playerController.transform.forward * Time.deltaTime);
-			dashTimeLeft -= Time.deltaTime; 
-			yield return null;
-        }
-
-		playerController.enabled = true;
-    }
-
-	public void UpgradeSkill(SkillType _skillType)
-	{
-		currentSkillType = _skillType;
-		switch (currentSkillType)
-		{
-			case SkillType.DoubleSlash:
-				
-				break;
-			case SkillType.Whirlwind:
-				
-				break;
-			case SkillType.DashAttack:
-				
-				break;
-		}
 	}
 
 }

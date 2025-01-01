@@ -9,25 +9,15 @@ public abstract class Weapon : MonoBehaviour
     public Effect[] effects;
     public float damage;
 	public Transform slashEffectSpawnPoint;
-    public Vector3 leftSlashRotation;
-    public Vector3 rightSlashRotation;
+    public int currentSkillLevel;
 	protected PlayerCombat playerCombat;
-    public enum SkillType
-    {
-		None,
-		DoubleSlash,
-		Whirlwind,
-		DashAttack,
-	}
-
-    public SkillType currentSkillType;
 
 	private void Start()
 	{
 		
 	}
 
-    public virtual void UseSkill()
+    public virtual void UseSkill(int currentSkillLevel)
     {
 
     }
@@ -59,7 +49,13 @@ public abstract class Weapon : MonoBehaviour
 
 	}
 
-    public void SetPlayerCombat(PlayerCombat _playerCombat)
+    public void UpgradeSkillLevel()
+    {
+        currentSkillLevel++;
+        playerCombat.currentWeaponUpgradeSkill = currentSkillLevel;
+    }
+
+	public void SetPlayerCombat(PlayerCombat _playerCombat)
     {
         playerCombat = _playerCombat;
     }

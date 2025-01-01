@@ -6,6 +6,7 @@ using static Sword;
 public class PlayerCombat : MonoBehaviour
 {
 	public Weapon currentWeapon;
+	public int currentWeaponUpgradeSkill;
 	public Animator animator;
 	public Transform meleeEffectSpawnPoint;
 
@@ -161,6 +162,7 @@ public class PlayerCombat : MonoBehaviour
 		currentWeapon.slashEffectSpawnPoint = meleeEffectSpawnPoint;
 		currentWeapon.effects = FindObjectOfType<EffectAssets>().effects;
 		weaponType = _weaponType;
+		currentWeapon.currentSkillLevel = currentWeaponUpgradeSkill;
 
 		currentWeapon.SetPlayerCombat(this);
 	}
