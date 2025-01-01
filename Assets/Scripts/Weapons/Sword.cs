@@ -56,25 +56,32 @@ public class Sword : MeleeWeapon
 	void Whirlwind()
 	{
 		playerCombat.animator.SetTrigger("Whirlwind");
-
-		Transform hitBox = playerCombat.whirlwindHitbox;
-
-		Collider[] hitColliders = Physics.OverlapSphere(hitBox.position, .5f, enemyLayer);
-
-		foreach (Collider hitCollider in hitColliders)
-		{
-			if (hitEnemies.Contains(hitCollider.gameObject)) continue;
-			hitEnemies.Add(hitCollider.gameObject);
-			Vector3 closetPoint = hitCollider.ClosestPoint(hitBox.position);
-			SpawnHitEffect(closetPoint);
-			DealDamage(hitCollider.gameObject);
-		}
 	}
 	
 	void DashAttack()
 	{
-
+		playerCombat.animator.SetTrigger("DashAttack");
+		//StartCoroutine(DashAttackCoroutine());
 	}
+
+	IEnumerator DashAttackCoroutine()
+	{
+		float dashDuration = 0.2f;
+		float dashTimeLeft = dashDuration;
+		float dashSpeed = 20f;
+
+		PlayerController playerController = FindObjectOfType<PlayerController>();
+		playerController.enabled = false;
+
+        while (dashTimeLeft > 0f)
+        {
+			FindObjectOfType<CharacterController>().Move(dashSpeed * playerController.transform.forward * Time.deltaTime);
+			dashTimeLeft -= Time.deltaTime; 
+			yield return null;
+        }
+
+		playerController.enabled = true;
+    }
 
 	public void UpgradeSkill(SkillType _skillType)
 	{

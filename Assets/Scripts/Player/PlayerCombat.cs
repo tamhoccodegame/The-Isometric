@@ -19,21 +19,25 @@ public class PlayerCombat : MonoBehaviour
 	public bool canApplyDamage;
 	public float damage;
 	public Transform hitBox;
-	public Transform whirlwindHitbox;
 	public float hitRadius;
 	public LayerMask enemyLayer;
 	public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+
+	private PlayerController playerController;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		animator = GetComponent<Animator>();
+		playerController = GetComponent<PlayerController>();
 		attackTimer = attackCooldown;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		if (playerController.isDashing) return;
+
 		Attack();
 		if (attackTimer <= attackCooldown)
 			attackCooldownBar.UpdateValueBar(attackTimer, attackCooldown);
@@ -75,10 +79,6 @@ public class PlayerCombat : MonoBehaviour
 
 	void Attack()
 	{
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-			animator.SetTrigger("Whirlwind");
-        }
         if (Input.GetKeyDown(KeyCode.C) && attackTimer >= attackCooldown)
 		{
 

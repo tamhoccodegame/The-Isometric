@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-	public GameObject effect;
 	public GameObject hitEffect;
 	public float hitRadius;
 	public Transform hitboxStart;

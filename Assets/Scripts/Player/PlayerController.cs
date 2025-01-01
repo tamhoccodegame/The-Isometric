@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
 	public float rotationSpeed;
+	public float dashSpeed;
+	public float dashDuration;
+	public bool isDashing = false;
+	public float dashTimeLeft;
 
     public float horizontalMove;
     public float verticalMove;
@@ -16,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 	private Vector3 initialCameraForward;
 	private Vector3 initialCameraRight;
+
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -40,6 +46,14 @@ public class PlayerController : MonoBehaviour
 		horizontalMove = Input.GetAxisRaw("Horizontal");
 		verticalMove = Input.GetAxisRaw("Vertical");
 
+		if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && movement.magnitude > 0.05f)
+		{
+			StartDash();
+		}
+	}
+
+	private void FixedUpdate()
+	{
 		movement = horizontalMove * initialCameraRight + verticalMove * initialCameraForward;
 		movement.Normalize();
 
@@ -50,10 +64,34 @@ public class PlayerController : MonoBehaviour
 			transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
 		}
 
+		if (isDashing)
+		{
+			PerformDash();
+			return;
+		}
 
 		characterController.Move(movement * speed * Time.deltaTime);
 		animator.SetBool("isRunning", movement.magnitude > 0f);
+	}
 
+	void StartDash()
+	{
+		animator.SetTrigger("isRoll");
+		isDashing = true;
+		dashTimeLeft = dashDuration;
+	}
+
+	void PerformDash()
+	{
+		if(dashTimeLeft > 0f)
+		{
+			characterController.Move(transform.forward * dashSpeed * Time.deltaTime);
+			dashTimeLeft -= Time.deltaTime;
+		}
+		else
+		{
+			isDashing = false;
+		}
 	}
 
 }
