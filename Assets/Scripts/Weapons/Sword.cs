@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Sword : MeleeWeapon
 {
-	private void Start()
-	{
-
-	}
 	public override void Attack()
 	{
 		if (currentSkillLevel == 0) playerCombat.animator.SetTrigger("isAttack");

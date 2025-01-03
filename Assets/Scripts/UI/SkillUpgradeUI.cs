@@ -35,7 +35,7 @@ public class SkillUpgradeUI : MonoBehaviour
         skillUpgradePanel.SetActive(true);
 
         //Random 3 kỹ năng
-        SkillData[] selectedSkills = RandomSkill(3);
+        SkillButton[] selectedSkills = RandomSkill(3);
 
         //Cập nhật UI
         for (int i = 0; i < skillButtons.Length; i++)
@@ -48,7 +48,7 @@ public class SkillUpgradeUI : MonoBehaviour
         }
     }
 
-    void UpgradeSkill(SkillData skillData)
+    void UpgradeSkill(SkillButton skillData)
     {
         skillUpgradeTimes--;
         skillUpgradeTimes = Mathf.Max(skillUpgradeTimes, 0);
@@ -61,10 +61,10 @@ public class SkillUpgradeUI : MonoBehaviour
         skillUpgrade.UpgradeSkill(skillData);
     }
 
-    SkillData[] RandomSkill(int count)
+    SkillButton[] RandomSkill(int count)
     {
-        List<SkillData> randomSkills = new List<SkillData>();
-        List<SkillData> avaliableSkills = new List<SkillData>(skillUpgrade.allSkills);
+        List<SkillButton> randomSkills = new List<SkillButton>();
+        List<SkillButton> avaliableSkills = new List<SkillButton>(skillUpgrade.allSkills);
 
         while(randomSkills.Count < count && avaliableSkills.Count > 0)
         {

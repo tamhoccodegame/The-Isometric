@@ -30,8 +30,9 @@ public class MeleeWeapon : Weapon
 		hitEnemies.Clear();
 	}
 	// Update is called once per frame
-	void Update()
+	protected override void Update()
 	{
+		base.Update();
 		if (!canApplyDamage) return;
 		PerformOverlapCheck();
 	}
@@ -64,6 +65,7 @@ public class MeleeWeapon : Weapon
 		if (enemyHealth != null)
 		{
 			enemyHealth.TakeDamage(damage);
+			ApplyEffect(enemy);
 		}
 	}
 

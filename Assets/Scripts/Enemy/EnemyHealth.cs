@@ -8,6 +8,8 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth;
     public HealthBar healthBar;
 
+    public List<BaseEffect> activeEffects;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,5 +36,11 @@ public class EnemyHealth : MonoBehaviour
     public void Die()
     {
 
+    }
+
+    public void ApplyEffect(BaseEffect effect)
+    {
+        activeEffects.Add(effect);
+        effect.ApplyEffect(gameObject);
     }
 }

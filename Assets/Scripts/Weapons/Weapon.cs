@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -11,11 +13,6 @@ public abstract class Weapon : MonoBehaviour
 	public Transform slashEffectSpawnPoint;
     public int currentSkillLevel;
 	protected PlayerCombat playerCombat;
-
-	private void Start()
-	{
-		
-	}
 
     public virtual void UseSkill(int currentSkillLevel)
     {
@@ -44,6 +41,37 @@ public abstract class Weapon : MonoBehaviour
 
     }
 
+    public void AddEffect(Type effect)
+    {
+        gameObject.AddComponent(effect);
+    }
+
+    public void ApplyEffect(GameObject enemy)
+    {
+        BaseEffect[] activeEffect = GetComponents<BaseEffect>();
+        if(activeEffect.Length > 0)
+        {
+            foreach(BaseEffect effect in activeEffect)
+            {
+                effect.ApplyEffect(enemy);
+            }
+        }
+    }
+
+    public void UpgradeEffect(Type effect)
+    {
+        if(GetComponent(effect) == null)
+        {
+            AddEffect(effect);
+            return;
+        }
+
+        if(effect == typeof(BleedingEffect))
+        {
+            GetComponent<BleedingEffect>().UpgradeEffect();
+        }
+    }
+
     public virtual void EndAttack()
     {
 
@@ -59,4 +87,16 @@ public abstract class Weapon : MonoBehaviour
     {
         playerCombat = _playerCombat;
     }
+
+	protected virtual void Update()
+	{
+        //if (Input.GetKeyDown(KeyCode.KeypadPlus))
+        //{
+        //    AddEffect(new BleedingEffect());
+        //}
+        if(Input.GetKeyDown(KeyCode.KeypadMultiply))
+        {
+            UpgradeEffect(typeof(BleedingEffect));
+        }
+	}
 }

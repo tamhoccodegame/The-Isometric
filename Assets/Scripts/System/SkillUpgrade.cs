@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SkillData
+public class SkillButton
 {
     public Sprite skillSprite;
     public SkillUpgrade.UpgradeSkillType upgradeSkillType;
@@ -14,11 +15,11 @@ public class SkillUpgrade : MonoBehaviour
     public SkillUpgradeUI skillUpgradeUI;
     public PlayerCombat playerCombat;
 
-    public List<SkillData> allSkills;
+    public List<SkillButton> allSkills;
 
     public enum UpgradeSkillType
     {
-        Effect,
+        BleedingEffect,
         WeaponSkill,
         Health,
     }
@@ -39,11 +40,12 @@ public class SkillUpgrade : MonoBehaviour
 
     }
 
-    public void UpgradeSkill(SkillData skillData)
+    public void UpgradeSkill(SkillButton skillData)
     {
         switch (skillData.upgradeSkillType)
         {
-            case UpgradeSkillType.Effect:
+            case UpgradeSkillType.BleedingEffect:
+                playerCombat.currentWeapon.UpgradeEffect(typeof(BleedingEffect));
                 break;
             case UpgradeSkillType.WeaponSkill:
                 playerCombat.currentWeapon.UpgradeSkillLevel();
