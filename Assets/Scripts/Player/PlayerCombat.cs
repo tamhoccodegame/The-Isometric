@@ -164,7 +164,6 @@ public class PlayerCombat : MonoBehaviour
 		weaponType = _weaponType;
 		currentWeapon.currentSkillLevel = currentWeaponUpgradeSkill;
 
-
 		currentWeapon.SetPlayerCombat(this);
 	}
 
