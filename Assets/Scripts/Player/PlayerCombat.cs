@@ -8,21 +8,13 @@ public class PlayerCombat : MonoBehaviour
 	public Weapon currentWeapon;
 	public int currentWeaponUpgradeSkill;
 	public Animator animator;
-	public Transform meleeEffectSpawnPoint;
 
 	public int weaponType;
+	public Transform meleeEffectSpawnPoint;
 
-	public float attackCooldown;
+    public float attackCooldown;
 	public float attackTimer;
 	public FloatingBar attackCooldownBar;
-
-	public GameObject punchEffect;
-	public bool canApplyDamage;
-	public float damage;
-	public Transform hitBox;
-	public float hitRadius;
-	public LayerMask enemyLayer;
-	public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
 
 	private PlayerController playerController;
 
@@ -32,10 +24,10 @@ public class PlayerCombat : MonoBehaviour
 		animator = GetComponent<Animator>();
 		playerController = GetComponent<PlayerController>();
 		attackTimer = attackCooldown;
-	}
+    }
 
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
 	{
 		if (playerController.isDashing) return;
 
@@ -43,39 +35,7 @@ public class PlayerCombat : MonoBehaviour
 		if (attackTimer <= attackCooldown)
 			attackCooldownBar.UpdateValueBar(attackTimer, attackCooldown);
 
-		if (canApplyDamage)
-		{
-			PerformOverlapCheck();
-		}
-
 		animator.SetInteger("weaponType", weaponType);
-	}
-
-	void PerformOverlapCheck()
-	{
-		Collider[] hitColliders = Physics.OverlapSphere(hitBox.position, hitRadius, enemyLayer);
-
-		foreach (Collider hitCollider in hitColliders)
-		{
-			if (hitEnemies.Contains(hitCollider.gameObject)) continue;
-			hitEnemies.Add(hitCollider.gameObject);
-			Vector3 closetPoint = hitCollider.ClosestPoint(hitBox.position);
-			DealDamage(hitCollider.gameObject);
-		}
-	}
-
-	private void OnDrawGizmos()
-	{
-		Gizmos.DrawWireSphere(hitBox.position, hitRadius);
-	}
-
-	protected virtual void DealDamage(GameObject enemy)
-	{
-		EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-		if (enemyHealth != null)
-		{
-			enemyHealth.TakeDamage(damage);
-		}
 	}
 
 	void Attack()
@@ -86,10 +46,6 @@ public class PlayerCombat : MonoBehaviour
 			if (currentWeapon != null)
 			{
 				currentWeapon.Attack();
-			}
-			else
-			{
-				animator.SetTrigger("isAttack");
 			}
 
 			attackTimer = 0;
@@ -107,24 +63,14 @@ public class PlayerCombat : MonoBehaviour
 		{
 			currentWeapon.SpawnEffect(effectName);
 		}
-		else
-		{
-			Vector3 offset = transform.forward * .2f;
-			Instantiate(punchEffect, meleeEffectSpawnPoint.position + offset, meleeEffectSpawnPoint.rotation, meleeEffectSpawnPoint);
-		}
 	}
 
 	public void ApplyDamage()
 	{
-		if (currentWeapon != null && currentWeapon is MeleeWeapon)
+		if (currentWeapon != null)
 		{
 			currentWeapon.ApplyDamage();
 		}
-		else
-		{
-			canApplyDamage = true;
-		}
-		hitEnemies.Clear();
 	}
 
 	public void EndAttack()
@@ -133,11 +79,6 @@ public class PlayerCombat : MonoBehaviour
 		{
 			currentWeapon.EndAttack();
 		}
-		else
-		{
-			canApplyDamage = false;
-		}
-		hitEnemies.Clear();
 	}
 
 	public Transform Traverse(Transform parent, string name)
@@ -158,12 +99,15 @@ public class PlayerCombat : MonoBehaviour
 
 	public void EquipWeapon(GameObject weapon, int _weaponType)
 	{
+		if(currentWeapon != null) currentWeapon.DropWeapon();
+
 		currentWeapon = weapon.GetComponent<Weapon>();
 		currentWeapon.slashEffectSpawnPoint = meleeEffectSpawnPoint;
 		currentWeapon.effects = FindObjectOfType<EffectAssets>().effects;
 		weaponType = _weaponType;
 		currentWeapon.currentSkillLevel = currentWeaponUpgradeSkill;
-
+		attackCooldown = currentWeapon.attackCooldown;
+		attackTimer = attackCooldown;
 		currentWeapon.SetPlayerCombat(this);
 	}
 

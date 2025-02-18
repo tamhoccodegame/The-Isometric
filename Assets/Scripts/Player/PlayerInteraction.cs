@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
+    public GameObject initialWeapon;
     public IPickable currentPickable;
     public Transform currentWeaponHolder;
     public Transform meleeWeaponHolder;
@@ -12,7 +13,8 @@ public class PlayerInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        int weaponType = initialWeapon.GetComponent<Weapon>().weaponType;
+        PickUpWeapon(initialWeapon, weaponType);
     }
 
     // Update is called once per frame
@@ -22,11 +24,21 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentPickable.OnInteract(this);
         } 
+
     }
 
     public void PickUpWeapon(GameObject weapon, int weaponType)
     {
-        GameObject w = Instantiate(weapon, meleeWeaponHolder.position, transform.rotation, meleeWeaponHolder);
+        switch (weaponType)
+        {
+            case 1:
+                currentWeaponHolder = meleeWeaponHolder;
+                break;
+            case 2:
+                currentWeaponHolder = rangeWeaponHolder;
+                break;
+        }
+        GameObject w = Instantiate(weapon, meleeWeaponHolder.position, transform.rotation, currentWeaponHolder);
         w.transform.localRotation = weapon.transform.rotation;
 		GetComponent<PlayerCombat>().EquipWeapon(w, weaponType);
         currentPickable = null;
@@ -45,7 +57,7 @@ public class PlayerInteraction : MonoBehaviour
 	private void OnTriggerExit(Collider other)
 	{
 		IPickable pickable = other.GetComponent<IPickable>();
-        if (pickable != null)
+        if (pickable != null && pickable == currentPickable)
 		{
 			currentPickable.HideInform();
 			currentPickable = null;

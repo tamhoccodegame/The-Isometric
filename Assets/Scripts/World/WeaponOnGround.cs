@@ -10,8 +10,6 @@ public class WeaponOnGround : MonoBehaviour, IPickable
 	public int weaponDamage;             // Sát thương
 	public Sprite weaponSprite;      // Icon vũ khí
 	public GameObject weaponPrefab; // Prefab của vũ khí khi trang bị
-	[Range(0, 3f)]
-	public int weaponType;
 
 	private Canvas infoCanvas;    // Canvas hiển thị thông tin
 	private bool isPlayerNearby;  // Kiểm tra người chơi có gần hay không
@@ -23,6 +21,7 @@ public class WeaponOnGround : MonoBehaviour, IPickable
 
 	public void OnInteract(PlayerInteraction player)
 	{
+		int weaponType = weaponPrefab.GetComponent<Weapon>().weaponType;
 		player.PickUpWeapon(weaponPrefab, weaponType);
 		Destroy(gameObject);
 	}

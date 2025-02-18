@@ -176,10 +176,11 @@ MonoBehaviour:
   effects: []
   damage: 20
   slashEffectSpawnPoint: {fileID: 0}
-  leftSlashRotation: {x: 0, y: 0, z: 0}
-  rightSlashRotation: {x: 0, y: 0, z: 0}
-  currentSkillType: 0
-  effect: {fileID: 5498847948633218347, guid: 54edce25c3252714893fe7f5236203d8, type: 3}
+  currentSkillLevel: 0
+  weaponType: 1
+  attackCooldown: 1.5
+  attackTimer: 0
+  weaponOnGroundPrefab: {fileID: 4084634596563803533, guid: 749d0af51b4528846b0dbea06a03dbce, type: 3}
   hitEffect: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
   hitRadius: 0.3
   hitboxStart: {fileID: 434962239635319738}

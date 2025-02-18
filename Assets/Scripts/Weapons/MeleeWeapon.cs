@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-	public GameObject hitEffect;
 	public float hitRadius;
 	public Transform hitboxStart;
 	public Transform hitboxEnd;
@@ -13,9 +12,9 @@ public class MeleeWeapon : Weapon
 
 	public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
 
-	public override void Attack()
+    public override void Attack()
 	{
-
+		
 	}
 
 	public override void ApplyDamage()
@@ -29,8 +28,14 @@ public class MeleeWeapon : Weapon
 		canApplyDamage = false;
 		hitEnemies.Clear();
 	}
-	// Update is called once per frame
-	protected override void Update()
+
+    void Start()
+    {
+		weaponType = 1;
+    }
+
+    // Update is called once per frame
+    protected override void Update()
 	{
 		base.Update();
 		if (!canApplyDamage) return;
@@ -53,10 +58,9 @@ public class MeleeWeapon : Weapon
 			DealDamage(hitCollider.gameObject);
 		}
 	}
-	protected void SpawnHitEffect(Vector3 position)
+	protected override void SpawnHitEffect(Vector3 position)
 	{
-		GameObject effect = Instantiate(hitEffect, position, Quaternion.identity);
-		Destroy(effect, 2f);
+		base.SpawnHitEffect(position);
 	}
 
 	protected virtual void DealDamage(GameObject enemy)

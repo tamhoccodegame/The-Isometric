@@ -13,6 +13,15 @@ public abstract class Weapon : MonoBehaviour
 	public Transform slashEffectSpawnPoint;
     public int currentSkillLevel;
 	protected PlayerCombat playerCombat;
+    public int weaponType;
+
+    public GameObject hitEffect;
+
+
+    public float attackCooldown;
+    public float attackTimer;
+
+    public GameObject weaponOnGroundPrefab;
 
     public virtual void UseSkill(int currentSkillLevel)
     {
@@ -30,7 +39,13 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-	public abstract void Attack();
+    protected virtual void SpawnHitEffect(Vector3 position)
+    {
+        GameObject effect = Instantiate(hitEffect, position, Quaternion.identity);
+        Destroy(effect, 2f);
+    }
+
+    public abstract void Attack();
     public virtual void Reload()
     {
         Debug.Log("Reloading");
@@ -86,6 +101,7 @@ public abstract class Weapon : MonoBehaviour
 	public void SetPlayerCombat(PlayerCombat _playerCombat)
     {
         playerCombat = _playerCombat;
+        slashEffectSpawnPoint = playerCombat.meleeEffectSpawnPoint;
     }
 
 	protected virtual void Update()
@@ -98,5 +114,19 @@ public abstract class Weapon : MonoBehaviour
         {
             UpgradeEffect(typeof(BleedingEffect));
         }
-	}
+
+
+        if (attackTimer <= attackCooldown)
+        {
+            attackTimer += Time.deltaTime;
+        }
+
+        
+    }
+
+    public void DropWeapon()
+    {
+        Instantiate(weaponOnGroundPrefab, playerCombat.transform.position, weaponOnGroundPrefab.transform.rotation);
+        Destroy(gameObject);
+    }
 }
