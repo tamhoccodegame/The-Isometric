@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Sword;
@@ -17,10 +18,12 @@ public class PlayerCombat : MonoBehaviour
 	public FloatingBar attackCooldownBar;
 
 	private PlayerController playerController;
+	private PhotonView view;
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		view = GetComponent<PhotonView>();
 		animator = GetComponent<Animator>();
 		playerController = GetComponent<PlayerController>();
 		attackTimer = attackCooldown;
@@ -29,6 +32,7 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
+		if (!view.IsMine) return;
 		if (playerController.isDashing) return;
 
 		Attack();
@@ -99,8 +103,9 @@ public class PlayerCombat : MonoBehaviour
 
 	public void EquipWeapon(GameObject weapon, int _weaponType)
 	{
+		if (!view.IsMine) return;
 		if(currentWeapon != null) currentWeapon.DropWeapon();
-
+		animator.Play("Null");
 		currentWeapon = weapon.GetComponent<Weapon>();
 		currentWeapon.slashEffectSpawnPoint = meleeEffectSpawnPoint;
 		currentWeapon.effects = FindObjectOfType<EffectAssets>().effects;

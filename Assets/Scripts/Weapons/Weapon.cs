@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,9 +11,9 @@ public abstract class Weapon : MonoBehaviour
 {
     public Effect[] effects;
     public float damage;
-	public Transform slashEffectSpawnPoint;
+    public Transform slashEffectSpawnPoint;
     public int currentSkillLevel;
-	protected PlayerCombat playerCombat;
+    protected PlayerCombat playerCombat;
     public int weaponType;
 
     public GameObject hitEffect;
@@ -27,7 +28,7 @@ public abstract class Weapon : MonoBehaviour
     {
 
     }
-	public void SpawnEffect(string effectName)
+    public void SpawnEffect(string effectName)
     {
         Effect effect = effects.FirstOrDefault(e => e.effectName == effectName);
 
@@ -64,9 +65,9 @@ public abstract class Weapon : MonoBehaviour
     public void ApplyEffect(GameObject enemy)
     {
         BaseEffect[] activeEffect = GetComponents<BaseEffect>();
-        if(activeEffect.Length > 0)
+        if (activeEffect.Length > 0)
         {
-            foreach(BaseEffect effect in activeEffect)
+            foreach (BaseEffect effect in activeEffect)
             {
                 effect.ApplyEffect(enemy);
             }
@@ -75,13 +76,13 @@ public abstract class Weapon : MonoBehaviour
 
     public void UpgradeEffect(Type effect)
     {
-        if(GetComponent(effect) == null)
+        if (GetComponent(effect) == null)
         {
             AddEffect(effect);
             return;
         }
 
-        if(effect == typeof(BleedingEffect))
+        if (effect == typeof(BleedingEffect))
         {
             GetComponent<BleedingEffect>().UpgradeEffect();
         }
@@ -90,7 +91,7 @@ public abstract class Weapon : MonoBehaviour
     public virtual void EndAttack()
     {
 
-	}
+    }
 
     public void UpgradeSkillLevel()
     {
@@ -98,19 +99,19 @@ public abstract class Weapon : MonoBehaviour
         playerCombat.currentWeaponUpgradeSkill = currentSkillLevel;
     }
 
-	public void SetPlayerCombat(PlayerCombat _playerCombat)
+    public void SetPlayerCombat(PlayerCombat _playerCombat)
     {
         playerCombat = _playerCombat;
         slashEffectSpawnPoint = playerCombat.meleeEffectSpawnPoint;
     }
 
-	protected virtual void Update()
-	{
+    protected virtual void Update()
+    {
         //if (Input.GetKeyDown(KeyCode.KeypadPlus))
         //{
         //    AddEffect(new BleedingEffect());
         //}
-        if(Input.GetKeyDown(KeyCode.KeypadMultiply))
+        if (Input.GetKeyDown(KeyCode.KeypadMultiply))
         {
             UpgradeEffect(typeof(BleedingEffect));
         }
@@ -121,12 +122,26 @@ public abstract class Weapon : MonoBehaviour
             attackTimer += Time.deltaTime;
         }
 
-        
+
     }
 
     public void DropWeapon()
     {
-        Instantiate(weaponOnGroundPrefab, playerCombat.transform.position, weaponOnGroundPrefab.transform.rotation);
-        Destroy(gameObject);
+        var droppedWeapon = PhotonNetwork.Instantiate(weaponOnGroundPrefab.name, playerCombat.transform.position, weaponOnGroundPrefab.transform.rotation);
+        DestroyWeaponInHand();
+    }
+
+    void DestroyWeaponInHand()
+    {
+        PhotonView view = GetComponent<PhotonView>();
+        if (view == null) return;
+        view.TransferOwnership(PhotonNetwork.LocalPlayer);
+        view.RPC("RPC_DestroyWeaponInHand", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    public void RPC_DestroyWeaponInHand()
+    {
+        PhotonNetwork.Destroy(gameObject);
     }
 }

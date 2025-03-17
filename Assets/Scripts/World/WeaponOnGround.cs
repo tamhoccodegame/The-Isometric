@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class WeaponOnGround : MonoBehaviour, IPickable
 
 	public void HideInform()
 	{
+		if(infoCanvas != null) 
 		infoCanvas.gameObject.SetActive(false);
 	}
 
@@ -23,11 +25,24 @@ public class WeaponOnGround : MonoBehaviour, IPickable
 	{
 		int weaponType = weaponPrefab.GetComponent<Weapon>().weaponType;
 		player.PickUpWeapon(weaponPrefab, weaponType);
-		Destroy(gameObject);
+		//Destroy(gameObject); // Xoá vũ khí trên mặt đất
+		DestroyWeaponOnGround();
+	}
+
+	void DestroyWeaponOnGround()
+	{
+		GetComponent<PhotonView>().RPC("RPC_DestroyWeaponOnGround", RpcTarget.AllBuffered);
+	}
+
+	[PunRPC]
+    public void RPC_DestroyWeaponOnGround()
+	{
+		PhotonNetwork.Destroy(gameObject);
 	}
 
 	public void ShowInform()
 	{
+		if (infoCanvas == null) return;
 		infoCanvas.gameObject.SetActive(true);
 		foreach(Transform child in infoCanvas.transform)
 		{

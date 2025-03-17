@@ -1,28 +1,33 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LockCamera : MonoBehaviour
 {
-    private Quaternion camRotation;
-    public Transform player;
-    public Vector3 offset;
-    public float minX, minZ, maxX, maxZ;
-    // Start is called before the first frame update
+    Quaternion initRotation;
+    Vector3 initPosition;
+    Vector3 offset;
+    PhotonView view;
     void Start()
     {
-        camRotation = transform.rotation;
+        initRotation = transform.rotation;
+        initPosition = transform.position;
+        offset = transform.position - transform.parent.position;
+        view = GetComponentInParent<PhotonView>();
+        if(!view.IsMine) gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 position = player.position;
+        if (!view.IsMine) return;
+            Vector3 position = transform.parent.position;
+            position += offset;
 
-        transform.rotation = camRotation;
-        position.x = Mathf.Clamp(position.x, minX, maxX);
-        position.z = Mathf.Clamp(position.z, minZ, maxZ);
+            transform.rotation = initRotation;
 
-        transform.position = position;
+            transform.position = position;
     }
 }

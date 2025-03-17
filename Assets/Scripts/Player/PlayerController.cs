@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	PhotonView view;
+
     public float speed;
 	public float rotationSpeed;
 	public float dashSpeed;
@@ -26,6 +29,7 @@ public class PlayerController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
+		view = GetComponent<PhotonView>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
@@ -43,35 +47,41 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		horizontalMove = Input.GetAxisRaw("Horizontal");
-		verticalMove = Input.GetAxisRaw("Vertical");
-
-		if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && movement.magnitude > 0.05f)
+		if(view.IsMine)
 		{
-			StartDash();
-		}
+            horizontalMove = Input.GetAxisRaw("Horizontal");
+            verticalMove = Input.GetAxisRaw("Vertical");
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && movement.magnitude > 0.05f)
+            {
+                StartDash();
+            }
+        }
 	}
 
 	private void FixedUpdate()
 	{
-		movement = horizontalMove * initialCameraRight + verticalMove * initialCameraForward;
-		movement.Normalize();
-
-		if (movement.magnitude > 0.01f)
+		if(view.IsMine)
 		{
-			// Quay nhân vật về hướng di chuyển mà không ảnh hưởng đến camera
-			Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
-			transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
-		}
+            movement = horizontalMove * initialCameraRight + verticalMove * initialCameraForward;
+            movement.Normalize();
 
-		if (isDashing)
-		{
-			PerformDash();
-			return;
-		}
+            if (movement.magnitude > 0.01f)
+            {
+                // Quay nhân vật về hướng di chuyển mà không ảnh hưởng đến camera
+                Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
+                transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
+            }
 
-		characterController.Move(movement * speed * Time.deltaTime);
-		animator.SetBool("isRunning", movement.magnitude > 0f);
+            if (isDashing)
+            {
+                PerformDash();
+                return;
+            }
+
+            characterController.Move(movement * speed * Time.deltaTime);
+            animator.SetBool("isRunning", movement.magnitude > 0f);
+        }
 	}
 
 	void StartDash()

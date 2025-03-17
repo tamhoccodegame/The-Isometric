@@ -14,7 +14,6 @@ public class LevelUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerLevel.onExpChange += OnExpChange;
     }
 
     // Update is called once per frame
@@ -32,6 +31,7 @@ public class LevelUI : MonoBehaviour
     public void SetPlayerLevel(PlayerLevel _playerLevel)
     {
         playerLevel = _playerLevel;
+        playerLevel.onExpChange += OnExpChange;
     }
 
 }

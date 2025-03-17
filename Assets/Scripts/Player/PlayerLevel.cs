@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ public class PlayerLevel : MonoBehaviour
 {
     public LevelUI levelUI;
     public SkillUpgradeUI skillUpgradeUI;
-
     public float[] expToLevelUp;
     public float currentExp = 0;
     public int currentLevel = 1;
@@ -15,20 +15,22 @@ public class PlayerLevel : MonoBehaviour
     public Action<float, int> onExpChange;
     public Action onLevelUp;
 
+    private PhotonView view;
+
 	private void Awake()
 	{
-        levelUI.SetPlayerLevel(this);
-        skillUpgradeUI.SetPlayerLevel(this);
-	}
+
+    }
 
 	// Start is called before the first frame update
 	void Start()
     {
-		onExpChange?.Invoke(currentExp, currentLevel);
-	}
+        skillUpgradeUI.SetPlayerLevel(this);
+        levelUI.SetPlayerLevel(this);
+    }
 
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
     {
         
     }

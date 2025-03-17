@@ -16,7 +16,7 @@ public class SkillUpgradeUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerLevel.onLevelUp += UpdateSkillUpgradeTimes;
+        
     }
 
     // Update is called once per frame
@@ -79,6 +79,7 @@ public class SkillUpgradeUI : MonoBehaviour
     public void SetPlayerLevel(PlayerLevel _playerLevel)
     {
         playerLevel = _playerLevel;
+        playerLevel.onLevelUp += UpdateSkillUpgradeTimes;
     }
 
     public void SetSkillUpgrade(SkillUpgrade _skillUpgrade)

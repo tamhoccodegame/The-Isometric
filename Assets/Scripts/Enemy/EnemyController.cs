@@ -9,7 +9,8 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent agent;
     public Vector3 currentPatrolPoint;
 
-    public LayerMask wallMask;
+    private Animator animator;
+
     public enum EnemyState
     {
         Patrol,
@@ -22,6 +23,7 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         Vector3 offset = new Vector3(Random.Range(5, 10), 0, Random.Range(5, 10));
         currentPatrolPoint = transform.position + offset;
 
@@ -65,15 +67,11 @@ public class EnemyController : MonoBehaviour
 
     void Patrol()
     {
-        RaycastHit hit;
-
         bool isReached = Vector3.Distance(transform.position, currentPatrolPoint) < 0.5f;
-        bool isFaceWall = Physics.Raycast(transform.position, transform.forward, out hit, 10f, wallMask);
 
-        if (isReached || isFaceWall)
+        if (isReached)
         {
 			SetNewPatrolPoint();
-
 		}
 
         agent.SetDestination(currentPatrolPoint);
@@ -82,6 +80,7 @@ public class EnemyController : MonoBehaviour
 
 	void SetNewPatrolPoint()
 	{
+        animator.SetTrigger("isAttack");
 		// Tạo điểm tuần tra ngẫu nhiên trong bán kính
 		Vector3 randomDirection = Random.insideUnitSphere * 20;
 		randomDirection += transform.position;
@@ -100,6 +99,21 @@ public class EnemyController : MonoBehaviour
     }
 
     void Attack()
+    {
+
+    }
+
+    public void ApplyDamage()
+    {
+
+    }
+
+    public void SpawnEffect()
+    {
+
+    }
+
+    public void EndAttack()
     {
 
     }
