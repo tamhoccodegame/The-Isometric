@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,13 +30,6 @@ public class WeaponOnGround : MonoBehaviour, IPickable
 
 	void DestroyWeaponOnGround()
 	{
-		GetComponent<PhotonView>().RPC("RPC_DestroyWeaponOnGround", RpcTarget.AllBuffered);
-	}
-
-	[PunRPC]
-    public void RPC_DestroyWeaponOnGround()
-	{
-		PhotonNetwork.Destroy(gameObject);
 	}
 
 	public void ShowInform()

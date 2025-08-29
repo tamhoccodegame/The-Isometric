@@ -1,13 +1,10 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	PhotonView view;
-
     public float speed;
 	public float rotationSpeed;
 	public float dashSpeed;
@@ -29,7 +26,6 @@ public class PlayerController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		view = GetComponent<PhotonView>();
         characterController = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
 
@@ -47,7 +43,6 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if(view.IsMine)
 		{
             horizontalMove = Input.GetAxisRaw("Horizontal");
             verticalMove = Input.GetAxisRaw("Vertical");
@@ -61,7 +56,6 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if(view.IsMine)
 		{
             movement = horizontalMove * initialCameraRight + verticalMove * initialCameraForward;
             movement.Normalize();

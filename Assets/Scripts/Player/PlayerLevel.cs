@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ public class PlayerLevel : MonoBehaviour
     public Action<float, int> onExpChange;
     public Action onLevelUp;
 
-    private PhotonView view;
 
 	private void Awake()
 	{

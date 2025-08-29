@@ -1,5 +1,4 @@
-﻿using Photon.Pun;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -127,21 +126,14 @@ public abstract class Weapon : MonoBehaviour
 
     public void DropWeapon()
     {
-        var droppedWeapon = PhotonNetwork.Instantiate(weaponOnGroundPrefab.name, playerCombat.transform.position, weaponOnGroundPrefab.transform.rotation);
         DestroyWeaponInHand();
     }
 
     void DestroyWeaponInHand()
     {
-        PhotonView view = GetComponent<PhotonView>();
-        if (view == null) return;
-        view.TransferOwnership(PhotonNetwork.LocalPlayer);
-        view.RPC("RPC_DestroyWeaponInHand", RpcTarget.AllBuffered);
     }
 
-    [PunRPC]
     public void RPC_DestroyWeaponInHand()
     {
-        PhotonNetwork.Destroy(gameObject);
     }
 }

@@ -1,4 +1,3 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,12 +10,9 @@ public class PlayerInteraction : MonoBehaviour
     public Transform meleeWeaponHolder;
     public Transform rangeWeaponHolder;
 
-    private PhotonView view;
-
     // Start is called before the first frame update
     void Start()
     {
-        view = GetComponent<PhotonView>();
         int weaponType = initialWeapon.GetComponent<Weapon>().weaponType;
         PickUpWeapon(initialWeapon, weaponType);
     }
@@ -24,7 +20,6 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!view.IsMine) return;
         if (currentPickable != null && Input.GetKeyDown(KeyCode.F))
         {
             currentPickable.OnInteract(this);
@@ -43,11 +38,11 @@ public class PlayerInteraction : MonoBehaviour
                 currentWeaponHolder = rangeWeaponHolder;
                 break;
         }
-        GameObject w = PhotonNetwork.Instantiate(weapon.name, meleeWeaponHolder.position, transform.rotation);
-        w.transform.SetParent(currentWeaponHolder, true);
-        w.transform.localRotation = weapon.transform.rotation;
-		GetComponent<PlayerCombat>().EquipWeapon(w, weaponType);
-        currentPickable = null;
+
+  //      w.transform.SetParent(currentWeaponHolder, true);
+  //      w.transform.localRotation = weapon.transform.rotation;
+		//GetComponent<PlayerCombat>().EquipWeapon(w, weaponType);
+  //      currentPickable = null;
 	}
 
 	private void OnTriggerEnter(Collider other)
