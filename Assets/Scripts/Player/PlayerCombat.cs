@@ -103,7 +103,6 @@ public class PlayerCombat : MonoBehaviour
 		animator.Play("Null");
 		currentWeapon = weapon.GetComponent<Weapon>();
 		currentWeapon.slashEffectSpawnPoint = meleeEffectSpawnPoint;
-		currentWeapon.effects = FindObjectOfType<EffectAssets>().effects;
 		weaponType = _weaponType;
 		currentWeapon.currentSkillLevel = currentWeaponUpgradeSkill;
 		attackCooldown = currentWeapon.attackCooldown;

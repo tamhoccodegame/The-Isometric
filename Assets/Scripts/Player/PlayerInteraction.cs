@@ -24,10 +24,9 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentPickable.OnInteract(this);
         } 
-
     }
 
-    public void PickUpWeapon(GameObject weapon, int weaponType)
+    public void PickUpWeapon(GameObject weaponPrefab, int weaponType)
     {
         switch (weaponType)
         {
@@ -39,10 +38,12 @@ public class PlayerInteraction : MonoBehaviour
                 break;
         }
 
-  //      w.transform.SetParent(currentWeaponHolder, true);
-  //      w.transform.localRotation = weapon.transform.rotation;
-		//GetComponent<PlayerCombat>().EquipWeapon(w, weaponType);
-  //      currentPickable = null;
+        GameObject w = Instantiate(weaponPrefab, currentWeaponHolder.position, weaponPrefab.transform.rotation);
+
+        w.transform.SetParent(currentWeaponHolder, true);
+        w.transform.localRotation = weaponPrefab.transform.rotation;
+		GetComponent<PlayerCombat>().EquipWeapon(w, weaponType);
+        currentPickable = null;
 	}
 
 	private void OnTriggerEnter(Collider other)

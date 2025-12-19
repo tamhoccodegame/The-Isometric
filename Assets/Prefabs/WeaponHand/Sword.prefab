@@ -173,15 +173,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a29ca003a4b529d4f8787e9aa332c0b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects: []
+  effects:
+  - effectName: LeftSlash
+    effectPrefab: {fileID: 5498847948633218347, guid: 8c24b98d1d085684cb7939d854636d12, type: 3}
+  - effectName: RightSlash
+    effectPrefab: {fileID: 5498847948633218347, guid: 54edce25c3252714893fe7f5236203d8, type: 3}
+  - effectName: Whirlwind
+    effectPrefab: {fileID: 7830553084932517342, guid: 6a9b4cc5904749e49b971af260de006f, type: 3}
+  - effectName: Tornado
+    effectPrefab: {fileID: 1865603112017772757, guid: 8e329fe21c043a1459b57cfea18d3f50, type: 3}
   damage: 20
   slashEffectSpawnPoint: {fileID: 0}
   currentSkillLevel: 0
   weaponType: 1
+  hitEffect: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
   attackCooldown: 1.5
   attackTimer: 0
   weaponOnGroundPrefab: {fileID: 4084634596563803533, guid: 749d0af51b4528846b0dbea06a03dbce, type: 3}
-  hitEffect: {fileID: 1758473627833946668, guid: 9b21333b068a5084ba09535839bee3c8, type: 3}
   hitRadius: 0.3
   hitboxStart: {fileID: 434962239635319738}
   hitboxEnd: {fileID: 6715292436125500611}

@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+
+[System.Serializable]
+public class Effect
+{
+    public string effectName;
+    public GameObject effectPrefab;
+}
 
 public abstract class Weapon : MonoBehaviour
 {
@@ -17,7 +20,6 @@ public abstract class Weapon : MonoBehaviour
 
     public GameObject hitEffect;
 
-
     public float attackCooldown;
     public float attackTimer;
 
@@ -27,9 +29,9 @@ public abstract class Weapon : MonoBehaviour
     {
 
     }
-    public void SpawnEffect(string effectName)
+    public void SpawnEffect(string _effectName)
     {
-        Effect effect = effects.FirstOrDefault(e => e.effectName == effectName);
+        Effect effect = effects.FirstOrDefault(e => e.effectName == _effectName);
 
         if (effect != null)
         {
