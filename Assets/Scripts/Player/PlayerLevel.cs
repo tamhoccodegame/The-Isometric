@@ -14,7 +14,6 @@ public class PlayerLevel : MonoBehaviour
     public Action<float, int> onExpChange;
     public Action onLevelUp;
 
-
 	private void Awake()
 	{
 
