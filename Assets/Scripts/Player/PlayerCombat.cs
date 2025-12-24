@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using static Sword;
+﻿using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -14,6 +11,7 @@ public class PlayerCombat : MonoBehaviour
 
     public float attackCooldown;
 	public float attackTimer;
+	public bool isAttack = false;
 	public FloatingBar attackCooldownBar;
 
 	private PlayerController playerController;
@@ -29,8 +27,6 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		if (playerController.isDashing) return;
-
 		Attack();
 		if (attackTimer <= attackCooldown)
 			attackCooldownBar.UpdateValueBar(attackTimer, attackCooldown);
@@ -40,15 +36,14 @@ public class PlayerCombat : MonoBehaviour
 
 	void Attack()
 	{
-        if (Input.GetKeyDown(KeyCode.C) && attackTimer >= attackCooldown)
+        if (Input.GetKeyDown(KeyCode.C) && attackTimer >= attackCooldown && !playerController.isDashing)
 		{
+            attackTimer = 0;
 
-			if (currentWeapon != null)
+            if (currentWeapon != null)
 			{
-				currentWeapon.Attack();
+                currentWeapon.Attack();
 			}
-
-			attackTimer = 0;
 		}
 
 		if (attackTimer <= attackCooldown)
@@ -70,6 +65,7 @@ public class PlayerCombat : MonoBehaviour
 		if (currentWeapon != null)
 		{
 			currentWeapon.ApplyDamage();
+			isAttack = true;
 		}
 	}
 
@@ -78,6 +74,7 @@ public class PlayerCombat : MonoBehaviour
 		if (currentWeapon != null && currentWeapon is MeleeWeapon)
 		{
 			currentWeapon.EndAttack();
+			isAttack = false;
 		}
 	}
 

@@ -14,11 +14,11 @@ public class RangeWeapon : Weapon
 
     public override void Attack()
 	{
-        playerCombat.animator.SetTrigger("isAttack");
+        //playerCombat.animator.SetTrigger("isAttack");
         
 	}
 
-    public override void ApplyDamage()
+    public override void ApplyDamage(int hitboxIndex = 0)
     {
         base.ApplyDamage();
         StartCoroutine(FlyCoroutine());
@@ -61,7 +61,7 @@ public class RangeWeapon : Weapon
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Start(int hitboxIndex = 0)
     {
         initPosition = transform.position;
         weaponType = 2;

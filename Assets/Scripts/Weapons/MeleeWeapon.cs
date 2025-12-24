@@ -7,26 +7,24 @@ public class MeleeWeapon : Weapon
 	public float hitRadius;
 	public Transform hitboxStart;
 	public Transform hitboxEnd;
-	public LayerMask enemyLayer;
 	public bool canApplyDamage = false;
 
 	public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+	public Hitbox[] hitboxs;
 
     public override void Attack()
 	{
 		
 	}
 
-	public override void ApplyDamage()
+    public override void ApplyDamage(int hitboxIndex = 0)
 	{
-		canApplyDamage = true;
-		hitEnemies.Clear();
+		hitboxs[hitboxIndex].canApplyDamage = true;
 	}
 
-	public override void EndAttack()
+	public override void EndAttack(int hitboxIndex = 0)
 	{
-		canApplyDamage = false;
-		hitEnemies.Clear();
+        hitboxs[hitboxIndex].canApplyDamage = false;
 	}
 
     void Start()
@@ -47,18 +45,19 @@ public class MeleeWeapon : Weapon
 		Vector3 start = hitboxStart.position;
 		Vector3 end = hitboxEnd.position;
 
-		Collider[] hitColliders = Physics.OverlapCapsule(start, end, hitRadius, enemyLayer);
+		//Collider[] hitColliders = Physics.OverlapCapsule(start, end, hitRadius, enemyLayer);
 
-		foreach (Collider hitCollider in hitColliders)
-		{
-			if(hitEnemies.Contains(hitCollider.gameObject)) continue;
-			hitEnemies.Add(hitCollider.gameObject);
-			Vector3 closetPoint = hitCollider.ClosestPoint((start + end) / 2);
-			SpawnHitEffect(closetPoint);
-			DealDamage(hitCollider.gameObject);
-		}
+		//foreach (Collider hitCollider in hitColliders)
+		//{
+		//	if(hitEnemies.Contains(hitCollider.gameObject)) continue;
+		//	hitEnemies.Add(hitCollider.gameObject);
+		//	Vector3 closetPoint = hitCollider.ClosestPoint((start + end) / 2);
+		//	SpawnHitEffect(closetPoint);
+		//	DealDamage(hitCollider.gameObject);
+		//}
 	}
-	protected override void SpawnHitEffect(Vector3 position)
+
+    protected override void SpawnHitEffect(Vector3 position)
 	{
 		base.SpawnHitEffect(position);
 	}

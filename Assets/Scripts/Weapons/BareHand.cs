@@ -9,12 +9,12 @@ public class BareHand : MeleeWeapon
 		playerCombat.animator.SetTrigger("isAttack");
 	}
 
-	public override void ApplyDamage()
+	public override void ApplyDamage(int hitboxIndex = 0)
 	{
 		base.ApplyDamage();
 	}
 
-	public override void EndAttack()
+	public override void EndAttack(int hitboxIndex = 0)
 	{
 		base.EndAttack();
 	}

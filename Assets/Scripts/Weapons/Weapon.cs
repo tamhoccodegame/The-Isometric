@@ -53,7 +53,7 @@ public abstract class Weapon : MonoBehaviour
         Debug.Log("Reloading");
     }
 
-    public virtual void ApplyDamage()
+    public virtual void ApplyDamage(int hitboxIndex = 0)
     {
 
     }
@@ -89,7 +89,7 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 
-    public virtual void EndAttack()
+    public virtual void EndAttack(int hitboxIndex = 0)
     {
 
     }
