@@ -12,6 +12,7 @@ public class Hitbox : MonoBehaviour
     {
         if (((1 << other.gameObject.layer) & enemyLayer) != 0 && canApplyDamage)
         {
+            Debug.Log(other.gameObject.name);
             Vector3 closetPoint = other.ClosestPoint(transform.position);
             GameObject effect = Instantiate(weapon.hitEffect, closetPoint, Quaternion.identity);
             Destroy(effect, 2f);

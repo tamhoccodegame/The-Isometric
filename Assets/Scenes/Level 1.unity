@@ -9776,6 +9776,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.159
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.881
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1577253398967444942, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1622573389350908415, guid: c30620c8a71fc9643a4d9d7e06bb62bd, type: 3}
       propertyPath: dashSpeed
       value: 5
@@ -19160,6 +19184,10 @@ PrefabInstance:
     - target: {fileID: 7672573785539125360, guid: b9d1fa3c1b57f7c4da328e9ebe7e8d64, type: 3}
       propertyPath: m_Name
       value: MagicOrbOnGround
+      objectReference: {fileID: 0}
+    - target: {fileID: 7672573785539125360, guid: b9d1fa3c1b57f7c4da328e9ebe7e8d64, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -57478,6 +57506,14 @@ PrefabInstance:
     - target: {fileID: 351401102523284039, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
       propertyPath: m_Interpolate
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101060701557956520, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
+      propertyPath: m_Height
+      value: 1.7000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101060701557956520, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
+      propertyPath: m_Radius
+      value: 0.29552433
       objectReference: {fileID: 0}
     - target: {fileID: 3038292095387262912, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
       propertyPath: m_Enabled
