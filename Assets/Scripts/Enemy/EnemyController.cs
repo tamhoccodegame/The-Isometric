@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
 {
     public NavMeshAgent agent;
     public Vector3 currentPatrolPoint;
+    public Transform player;
 
     private Animator animator;
 
@@ -19,7 +20,7 @@ public class EnemyController : MonoBehaviour
     }
 
     public EnemyState state;
-      
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +34,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch(state)
+        switch (state)
         {
             case EnemyState.Patrol:
                 Patrol();
@@ -49,21 +50,26 @@ public class EnemyController : MonoBehaviour
 
     public void ChangeState(EnemyState newState)
     {
-		switch (state)
-		{
-			case EnemyState.Patrol:
-                Patrol();
-				break;
-			case EnemyState.Chase:
-                Chase();
-				break;
-			case EnemyState.Attack:
-                Attack();
-				break;
-		}
+        if (state == newState) return;
 
         state = newState;
-	}
+
+        switch (state)
+        {
+            case EnemyState.Patrol:
+                agent.isStopped = false;
+                break;
+
+            case EnemyState.Chase:
+                agent.isStopped = false;
+                break;
+
+            case EnemyState.Attack:
+                agent.isStopped = true;
+                break;
+        }
+    }
+
 
     void Patrol()
     {
@@ -71,32 +77,57 @@ public class EnemyController : MonoBehaviour
 
         if (isReached)
         {
-			SetNewPatrolPoint();
-		}
+            SetNewPatrolPoint();
+        }
 
         agent.SetDestination(currentPatrolPoint);
 
-	}
-
-	void SetNewPatrolPoint()
-	{
-        animator.SetTrigger("isAttack");
-		// Tạo điểm tuần tra ngẫu nhiên trong bán kính
-		Vector3 randomDirection = Random.insideUnitSphere * 20;
-		randomDirection += transform.position;
-
-		// Tìm điểm có thể đi được trên NavMesh
-		NavMeshHit hit;
-		if (NavMesh.SamplePosition(randomDirection, out hit, 20, NavMesh.AllAreas))
-		{
-			currentPatrolPoint = hit.position;
-		}
-	}
-
-	void Chase()
-    {
-
+        if (Vector3.Distance(transform.position, player.transform.position) <= 10f)
+        {
+            ChangeState(EnemyState.Chase);
+        }
     }
+
+    void SetNewPatrolPoint()
+    {
+        animator.SetTrigger("isAttack");
+        // Tạo điểm tuần tra ngẫu nhiên trong bán kính
+        Vector3 randomDirection = Random.insideUnitSphere * 20;
+        randomDirection += transform.position;
+
+        // Tìm điểm có thể đi được trên NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, 20, NavMesh.AllAreas))
+        {
+            currentPatrolPoint = hit.position;
+        }
+    }
+
+    float chaseUpdateRate = 0.2f;
+    float chaseTimer;
+
+    void Chase()
+    {
+        chaseTimer -= Time.deltaTime;
+
+        if (chaseTimer <= 0f)
+        {
+            agent.SetDestination(player.position);
+            chaseTimer = chaseUpdateRate;
+        }
+
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        //if (distance <= agent.stoppingDistance + 0.5f)
+        //{
+        //    ChangeState(EnemyState.Attack);
+        //}
+        //else if (distance > 15f)
+        //{
+        //    ChangeState(EnemyState.Patrol);
+        //}
+    }
+
 
     void Attack()
     {

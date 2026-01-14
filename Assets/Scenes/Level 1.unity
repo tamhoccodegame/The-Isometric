@@ -57517,7 +57517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3038292095387262912, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5259928604072970828, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
       propertyPath: m_Enabled
@@ -57576,8 +57576,12 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 8946414221678651092, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 149832015}
+    - target: {fileID: 8946414221678651092, guid: 0ae40b9a6a6498f458a3a5213008a59b, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
